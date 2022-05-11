@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Farooq Mahmud
 
+#pragma warning disable CS8618
 namespace DataAccess.Entities
 {
 	/// <summary>
@@ -30,16 +31,11 @@ namespace DataAccess.Entities
 		/// <summary>
 		/// Gets or sets the payee.
 		/// </summary>
-		public Payee? Payee { get; set; }
+		public Payee Payee { get; set; }
 
 		/// <summary>
 		/// Gets or sets the category.
 		/// </summary>
-		public Category? Category { get; set; }
-
-		/// <summary>
-		/// Gets or sets the ledger this entry belongs to.
-		/// </summary>
-		public Ledger? Ledger { get; set; }
+		public Category Category { get; set; }
 	}
 }

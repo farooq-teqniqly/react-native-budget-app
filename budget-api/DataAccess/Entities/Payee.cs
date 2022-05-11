@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Farooq Mahmud
 
+#pragma warning disable CS8618
 namespace DataAccess.Entities
 {
 	/// <summary>
@@ -15,6 +16,6 @@ namespace DataAccess.Entities
 		/// <summary>
 		/// Gets or sets the payee name.
 		/// </summary>
-		public string? Name { get; set; }
+		public string Name { get; set; }
 	}
 }

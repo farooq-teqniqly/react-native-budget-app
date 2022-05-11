@@ -18,7 +18,6 @@ namespace DataAccess.Configurations
 			builder.Property(e => e.Created).IsRequired().ValueGeneratedOnAdd();
 			builder.Property(e => e.Name).IsRequired();
 			builder.HasIndex(e => e.Name).IsUnique();
-			builder.HasOne<Ledger>().WithOne(e => e.User);
 		}
 	}
 }

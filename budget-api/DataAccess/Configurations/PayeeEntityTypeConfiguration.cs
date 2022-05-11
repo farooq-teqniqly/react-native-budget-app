@@ -8,6 +8,7 @@ namespace DataAccess.Configurations
 	using System.Text;
 	using System.Threading.Tasks;
 	using DataAccess.Entities;
+	using Microsoft.EntityFrameworkCore;
 	using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 	/// <summary>
@@ -18,6 +19,7 @@ namespace DataAccess.Configurations
 		/// <inheritdoc />
 		public override void FurtherConfiguration(EntityTypeBuilder<Payee> builder)
 		{
+			builder.ToTable("Payee");
 			builder.Property(e => e.Name).IsRequired();
 			builder.HasIndex(e => e.Name).IsUnique();
 		}

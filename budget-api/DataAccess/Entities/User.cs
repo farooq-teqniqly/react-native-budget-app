@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Farooq Mahmud
 
+#pragma warning disable CS8618
 namespace DataAccess.Entities
 {
 	/// <summary>
@@ -15,16 +16,11 @@ namespace DataAccess.Entities
 		/// <summary>
 		/// Gets or sets the user name.
 		/// </summary>
-		public string? Name { get; set; }
+		public string Name { get; set; }
 
 		/// <summary>
 		/// Gets or sets the date the user was created.
 		/// </summary>
 		public DateTime Created { get; set; }
-
-		/// <summary>
-		/// Gets or sets the ledger owned by the user.
-		/// </summary>
-		public Ledger? Ledger { get; set; }
 	}
 }

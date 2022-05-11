@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Farooq Mahmud
 
+#pragma warning disable CS8618
 namespace DataAccess.Entities
 {
 	/// <summary>
@@ -7,6 +8,14 @@ namespace DataAccess.Entities
 	/// </summary>
 	public class Ledger : IEntity
 	{
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Ledger"/> class.
+		/// </summary>
+		public Ledger()
+		{
+			this.LedgerEntries = new HashSet<LedgerEntry>();
+		}
+
 		/// <summary>
 		/// Gets or sets the ledger id.
 		/// </summary>
@@ -25,11 +34,11 @@ namespace DataAccess.Entities
 		/// <summary>
 		/// Gets or sets the entries associated with the ledger.
 		/// </summary>
-		public ICollection<LedgerEntry>? LedgerEntries { get; set; }
+		public ICollection<LedgerEntry> LedgerEntries { get; set; }
 
 		/// <summary>
 		/// Gets or sets the user who owns the ledger.
 		/// </summary>
-		public User? User { get; set; }
+		public User User { get; set; }
 	}
 }

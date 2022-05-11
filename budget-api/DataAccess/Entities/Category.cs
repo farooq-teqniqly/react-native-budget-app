@@ -15,6 +15,6 @@ namespace DataAccess.Entities
 		/// <summary>
 		/// Gets or sets the category name.
 		/// </summary>
-		public string? Name { get; set; }
+		public string Name { get; set; }
 	}
 }
