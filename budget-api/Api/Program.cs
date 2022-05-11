@@ -26,6 +26,10 @@ namespace Api
 
 			var app = builder.Build();
 
+			var scope = app.Services.CreateScope();
+			var databaseContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+			databaseContext.Database.Migrate();
+
 			if (app.Environment.IsDevelopment())
 			{
 				app.UseSwagger();

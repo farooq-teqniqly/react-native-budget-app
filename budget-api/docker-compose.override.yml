@@ -5,6 +5,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ConnectionStrings__BudgetDb=Server=sql,1433;Database=BudgetApp;User Id=sa;Password=111OFgilead!!!;
     ports:
       - "80"
       - "443"
