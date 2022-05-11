@@ -8,10 +8,8 @@ namespace Api.Controllers
 	using Api.Models;
 	using Api.Services;
 	using AutoMapper;
-	using DataAccess;
 	using DataAccess.Entities;
 	using Microsoft.AspNetCore.Mvc;
-	using Microsoft.EntityFrameworkCore;
 
 	/// <summary>
 	/// A controller for working with payees..
