@@ -19,6 +19,9 @@ namespace Api.Services
 			this.CreateMap<CreateLedgerRequest, Ledger>();
 			this.CreateMap<Ledger, CreateLedgerResponse>();
 			this.CreateMap<Ledger, GetLedgerResponse>();
+			this.CreateMap<Category[], GetCategoryResponse[]>();
+			this.CreateMap<CreateCategoryRequest, Category>();
+			this.CreateMap<Category, CreateCategoryResponse>();
 		}
 	}
 }
