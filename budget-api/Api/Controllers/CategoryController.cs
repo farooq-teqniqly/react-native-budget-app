@@ -63,7 +63,7 @@ namespace Api.Controllers
 
 			var response = this.mapper.Map<Category, CreateCategoryRequest>(category);
 
-			return this.CreatedAtRoute("GetCategories", value: category);
+			return this.CreatedAtRoute("GetCategories", value: response);
 		}
 
 		/// <summary>
