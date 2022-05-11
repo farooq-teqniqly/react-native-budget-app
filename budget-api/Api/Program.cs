@@ -22,6 +22,8 @@ namespace Api
 			builder.Services.AddAutoMapper(typeof(MappingProfile));
 			builder.Services.AddSingleton<IDateTimeService, DateTimeService>();
 
+			builder.Services.AddScoped<IRepository, Repository>();
+
 			var app = builder.Build();
 
 			if (app.Environment.IsDevelopment())

@@ -6,11 +6,10 @@ namespace Api.Controllers
 	using System.Net;
 	using System.Threading.Tasks;
 	using Api.Models;
+	using Api.Services;
 	using AutoMapper;
-	using DataAccess;
 	using DataAccess.Entities;
 	using Microsoft.AspNetCore.Mvc;
-	using Microsoft.EntityFrameworkCore;
 
 	/// <summary>
 	/// A controller for working with categories.
@@ -19,17 +18,17 @@ namespace Api.Controllers
 	[ApiController]
 	public class CategoryController : ControllerBase
 	{
-		private readonly DatabaseContext databaseContext;
+		private readonly IRepository repository;
 		private readonly IMapper mapper;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CategoryController"/> class.
 		/// </summary>
-		/// <param name="databaseContext">The database context.</param>
+		/// <param name="repository">The repository.</param>
 		/// <param name="mapper">The entity mapper.</param>
-		public CategoryController(DatabaseContext databaseContext, IMapper mapper)
+		public CategoryController(IRepository repository, IMapper mapper)
 		{
-			this.databaseContext = databaseContext;
+			this.repository = repository;
 			this.mapper = mapper;
 		}
 
@@ -42,7 +41,7 @@ namespace Api.Controllers
 		[ProducesResponseType(typeof(GetCategoryResponse[]), (int)HttpStatusCode.OK)]
 		public async Task<IActionResult> GetCategories()
 		{
-			var categories = await this.databaseContext.Categories.ToArrayAsync();
+			var categories = (await this.repository.GetAsync<Category>()).ToArray();
 			var response = this.mapper.Map<Category[], GetCategoryResponse[]>(categories);
 
 			return this.Ok(response);
@@ -58,10 +57,10 @@ namespace Api.Controllers
 		public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryRequest request)
 		{
 			var category = this.mapper.Map<CreateCategoryRequest, Category>(request);
-			this.databaseContext.Categories.Add(category);
-			await this.databaseContext.SaveChangesAsync();
+			category = await this.repository.AddAsync(category);
+			await this.repository.SaveChangesAsync();
 
-			var response = this.mapper.Map<Category, CreateCategoryRequest>(category);
+			var response = this.mapper.Map<Category, CreateCategoryResponse>(category);
 
 			return this.CreatedAtRoute("GetCategories", value: response);
 		}
@@ -76,12 +75,12 @@ namespace Api.Controllers
 		[ProducesResponseType((int)HttpStatusCode.NoContent)]
 		public async Task<IActionResult> DeleteCategory(Guid categoryId)
 		{
-			var category = await this.databaseContext.Categories.FirstOrDefaultAsync(c => c.Id == categoryId);
+			var category = await this.repository.GetAsync<Category>(categoryId);
 
 			if (category != null)
 			{
-				this.databaseContext.Categories.Remove(category);
-				await this.databaseContext.SaveChangesAsync();
+				this.repository.Remove(category);
+				await this.repository.SaveChangesAsync();
 			}
 
 			return this.NoContent();

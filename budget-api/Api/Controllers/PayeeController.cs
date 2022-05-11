@@ -6,6 +6,7 @@ namespace Api.Controllers
 	using System.Net;
 	using System.Threading.Tasks;
 	using Api.Models;
+	using Api.Services;
 	using AutoMapper;
 	using DataAccess;
 	using DataAccess.Entities;
@@ -19,17 +20,17 @@ namespace Api.Controllers
 	[ApiController]
 	public class PayeeController : ControllerBase
 	{
-		private readonly DatabaseContext databaseContext;
+		private readonly IRepository repository;
 		private readonly IMapper mapper;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PayeeController"/> class.
 		/// </summary>
-		/// <param name="databaseContext">The database context.</param>
+		/// <param name="repository">The repository.</param>
 		/// <param name="mapper">The entity mapper.</param>
-		public PayeeController(DatabaseContext databaseContext, IMapper mapper)
+		public PayeeController(IRepository repository, IMapper mapper)
 		{
-			this.databaseContext = databaseContext;
+			this.repository = repository;
 			this.mapper = mapper;
 		}
 
@@ -42,7 +43,7 @@ namespace Api.Controllers
 		[ProducesResponseType(typeof(GetPayeeResponse[]), (int)HttpStatusCode.OK)]
 		public async Task<IActionResult> GetPayees()
 		{
-			var payees = await this.databaseContext.Payees.ToArrayAsync();
+			var payees = (await this.repository.GetAsync<Payee>()).ToArray();
 			var response = this.mapper.Map<Payee[], GetPayeeResponse[]>(payees);
 
 			return this.Ok(response);
@@ -58,10 +59,10 @@ namespace Api.Controllers
 		public async Task<IActionResult> CreatePayee([FromBody] CreatePayeeRequest request)
 		{
 			var payee = this.mapper.Map<CreatePayeeRequest, Payee>(request);
-			this.databaseContext.Payees.Add(payee);
-			await this.databaseContext.SaveChangesAsync();
+			payee = await this.repository.AddAsync(payee);
+			await this.repository.SaveChangesAsync();
 
-			var response = this.mapper.Map<Payee, CreatePayeeRequest>(payee);
+			var response = this.mapper.Map<Payee, CreatePayeeResponse>(payee);
 
 			return this.CreatedAtRoute("GetPayees", value: response);
 		}
@@ -76,12 +77,12 @@ namespace Api.Controllers
 		[ProducesResponseType((int)HttpStatusCode.NoContent)]
 		public async Task<IActionResult> DeletePayee(Guid payeeId)
 		{
-			var payee = await this.databaseContext.Payees.FirstOrDefaultAsync(p => p.Id == payeeId);
+			var payee = await this.repository.GetAsync<Payee>(payeeId);
 
 			if (payee != null)
 			{
-				this.databaseContext.Payees.Remove(payee);
-				await this.databaseContext.SaveChangesAsync();
+				this.repository.Remove(payee);
+				await this.repository.SaveChangesAsync();
 			}
 
 			return this.NoContent();

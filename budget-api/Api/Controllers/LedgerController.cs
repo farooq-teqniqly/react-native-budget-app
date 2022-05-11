@@ -20,19 +20,19 @@ namespace Api.Controllers
 	[ApiController]
 	public class LedgerController : ControllerBase
 	{
-		private readonly DatabaseContext databaseContext;
+		private readonly IRepository repository;
 		private readonly IMapper mapper;
 		private readonly IDateTimeService dateTimeService;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="LedgerController"/> class.
 		/// </summary>
-		/// <param name="databaseContext">The database context.</param>
+		/// <param name="repository">The repository.</param>
 		/// <param name="mapper">The entity mapper.</param>
 		/// <param name="dateTimeService">The date time service.</param>
-		public LedgerController(DatabaseContext databaseContext, IMapper mapper, IDateTimeService dateTimeService)
+		public LedgerController(IRepository repository, IMapper mapper, IDateTimeService dateTimeService)
 		{
-			this.databaseContext = databaseContext;
+			this.repository = repository;
 			this.mapper = mapper;
 			this.dateTimeService = dateTimeService;
 		}
@@ -45,10 +45,7 @@ namespace Api.Controllers
 		[ProducesResponseType(typeof(Guid[]), (int)HttpStatusCode.OK)]
 		public async Task<IActionResult> GetLedgers()
 		{
-			var ledgerIds = await this.databaseContext.Ledgers
-				.Select(ledger => ledger.Id)
-				.ToArrayAsync();
-
+			var ledgerIds = (await this.repository.GetAsync<Ledger>()).Select(ledger => ledger.Id).ToArray();
 			return this.Ok(ledgerIds);
 		}
 
@@ -62,11 +59,10 @@ namespace Api.Controllers
 		public async Task<IActionResult> CreateLedger([FromBody] CreateLedgerRequest request)
 		{
 			var ledger = this.mapper.Map<CreateLedgerRequest, Ledger>(request);
+
 			ledger.Created = this.dateTimeService.DateTime;
-
-			this.databaseContext.Ledgers.Add(ledger);
-
-			await this.databaseContext.SaveChangesAsync();
+			ledger = await this.repository.AddAsync(ledger);
+			await this.repository.SaveChangesAsync();
 
 			var response = this.mapper.Map<Ledger, CreateLedgerResponse>(ledger);
 
@@ -83,7 +79,7 @@ namespace Api.Controllers
 		[ProducesResponseType(typeof(GetLedgerResponse), (int)HttpStatusCode.OK)]
 		public async Task<IActionResult> GetLedger(Guid ledgerId)
 		{
-			var ledger = await this.databaseContext.Ledgers.SingleOrDefaultAsync(l => l.Id == ledgerId);
+			var ledger = await this.repository.GetAsync<Ledger>(ledgerId);
 
 			if (ledger == null)
 			{
@@ -104,12 +100,12 @@ namespace Api.Controllers
 		[ProducesResponseType((int)HttpStatusCode.NoContent)]
 		public async Task<IActionResult> DeleteLedger(Guid ledgerId)
 		{
-			var ledger = this.databaseContext.Ledgers.FirstOrDefault(l => l.Id == ledgerId);
+			var ledger = await this.repository.GetAsync<Ledger>(ledgerId);
 
 			if (ledger != null)
 			{
-				this.databaseContext.Ledgers.Remove(ledger);
-				await this.databaseContext.SaveChangesAsync();
+				this.repository.Remove(ledger);
+				await this.repository.SaveChangesAsync();
 			}
 
 			return this.NoContent();
