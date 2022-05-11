@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Farooq Mahmud
 
+#pragma warning disable CS8618
 namespace DataAccess
 {
 	using DataAccess.Entities;
@@ -30,22 +31,17 @@ namespace DataAccess
 		/// <summary>
 		/// Gets or sets the ledgers DbSet.
 		/// </summary>
-		public DbSet<Ledger>? Ledgers { get; set; }
+		public DbSet<Ledger> Ledgers { get; set; }
 
 		/// <summary>
 		/// Gets or sets the categories DbSet.
 		/// </summary>
-		public DbSet<Category>? Categories { get; set; }
+		public DbSet<Category> Categories { get; set; }
 
 		/// <summary>
 		/// Gets or sets the payees DbSet.
 		/// </summary>
-		public DbSet<Payee>? Payees { get; set; }
-
-		/// <summary>
-		/// Gets or sets the users DbSet.
-		/// </summary>
-		public DbSet<User>? Users { get; set; }
+		public DbSet<Payee> Payees { get; set; }
 
 		/// <inheritdoc />
 		protected override void OnModelCreating(ModelBuilder modelBuilder)

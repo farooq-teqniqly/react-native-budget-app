@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Farooq Mahmud
 
+#pragma warning disable CS8618
 namespace DataAccess.Entities
 {
 	/// <summary>

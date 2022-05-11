@@ -15,8 +15,10 @@ namespace DataAccess.Configurations
 		public override void FurtherConfiguration(EntityTypeBuilder<Ledger> builder)
 		{
 			builder.ToTable("Ledger");
-			builder.Property(e => e.Created).IsRequired().ValueGeneratedOnAdd();
-			builder.Property(e => e.LastUpdated).IsRequired().ValueGeneratedOnUpdate();
+			builder.Property(e => e.Name).IsRequired();
+			builder.HasIndex(e => e.Name).IsUnique();
+			builder.Property(e => e.Created).IsRequired();
+			builder.Property(e => e.LastUpdated).IsRequired();
 		}
 	}
 }

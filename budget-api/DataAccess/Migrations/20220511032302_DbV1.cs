@@ -1,12 +1,18 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿// Copyright (c) Farooq Mahmud
 
 #nullable disable
 
 namespace DataAccess.Migrations
 {
-	public partial class first : Migration
+	using System;
+	using Microsoft.EntityFrameworkCore.Migrations;
+
+	/// <summary>
+	/// Database migration version 1.
+	/// </summary>
+	public partial class DbV1 : Migration
 	{
+		/// <inheritdoc/>
 		protected override void Up(MigrationBuilder migrationBuilder)
 		{
 			migrationBuilder.CreateTable(
@@ -14,36 +20,11 @@ namespace DataAccess.Migrations
 				columns: table => new
 				{
 					Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-					Name = table.Column<string>(type: "nvarchar(450)", nullable: false)
+					Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
 				},
 				constraints: table =>
 				{
 					table.PrimaryKey("PK_Category", x => x.Id);
-				});
-
-			migrationBuilder.CreateTable(
-				name: "Payee",
-				columns: table => new
-				{
-					Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-					Name = table.Column<string>(type: "nvarchar(450)", nullable: false)
-				},
-				constraints: table =>
-				{
-					table.PrimaryKey("PK_Payee", x => x.Id);
-				});
-
-			migrationBuilder.CreateTable(
-				name: "User",
-				columns: table => new
-				{
-					Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-					Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-					Created = table.Column<DateTime>(type: "datetime2", nullable: false)
-				},
-				constraints: table =>
-				{
-					table.PrimaryKey("PK_User", x => x.Id);
 				});
 
 			migrationBuilder.CreateTable(
@@ -53,17 +34,22 @@ namespace DataAccess.Migrations
 					Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
 					Created = table.Column<DateTime>(type: "datetime2", nullable: false),
 					LastUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
-					UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
 				},
 				constraints: table =>
 				{
 					table.PrimaryKey("PK_Ledger", x => x.Id);
-					table.ForeignKey(
-						name: "FK_Ledger_User_UserId",
-						column: x => x.UserId,
-						principalTable: "User",
-						principalColumn: "Id",
-						onDelete: ReferentialAction.Cascade);
+				});
+
+			migrationBuilder.CreateTable(
+				name: "Payee",
+				columns: table => new
+				{
+					Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+					Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+				},
+				constraints: table =>
+				{
+					table.PrimaryKey("PK_Payee", x => x.Id);
 				});
 
 			migrationBuilder.CreateTable(
@@ -76,7 +62,7 @@ namespace DataAccess.Migrations
 					IsIncome = table.Column<bool>(type: "bit", nullable: false),
 					PayeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
 					CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-					LedgerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+					LedgerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
 				},
 				constraints: table =>
 				{
@@ -107,11 +93,6 @@ namespace DataAccess.Migrations
 				unique: true);
 
 			migrationBuilder.CreateIndex(
-				name: "IX_Ledger_UserId",
-				table: "Ledger",
-				column: "UserId");
-
-			migrationBuilder.CreateIndex(
 				name: "IX_LedgerEntry_CategoryId",
 				table: "LedgerEntry",
 				column: "CategoryId");
@@ -131,14 +112,9 @@ namespace DataAccess.Migrations
 				table: "Payee",
 				column: "Name",
 				unique: true);
-
-			migrationBuilder.CreateIndex(
-				name: "IX_User_Name",
-				table: "User",
-				column: "Name",
-				unique: true);
 		}
 
+		/// <inheritdoc/>
 		protected override void Down(MigrationBuilder migrationBuilder)
 		{
 			migrationBuilder.DropTable(
@@ -152,9 +128,6 @@ namespace DataAccess.Migrations
 
 			migrationBuilder.DropTable(
 				name: "Payee");
-
-			migrationBuilder.DropTable(
-				name: "User");
 		}
 	}
 }

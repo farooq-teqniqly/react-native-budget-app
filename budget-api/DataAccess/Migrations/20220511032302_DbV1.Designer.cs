@@ -12,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220511030643_first")]
-    partial class first
+    [Migration("20220511032302_DbV1")]
+    partial class DbV1
     {
+        /// <inheritdoc/>
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
@@ -57,12 +58,7 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Ledger", (string)null);
                 });
@@ -119,39 +115,6 @@ namespace DataAccess.Migrations
                         .IsUnique();
 
                     b.ToTable("Payee", (string)null);
-                });
-
-            modelBuilder.Entity("DataAccess.Entities.User", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("Created")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("User", (string)null);
-                });
-
-            modelBuilder.Entity("DataAccess.Entities.Ledger", b =>
-                {
-                    b.HasOne("DataAccess.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.LedgerEntry", b =>
