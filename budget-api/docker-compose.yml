@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+  api:
+    image: ${DOCKER_REGISTRY-}api
+    build:
+      context: .
+      dockerfile: Api/Dockerfile
+    depends_on:
+      - "sql"
+  sql:
+    image: "mcr.microsoft.com/mssql/server"
+    environment:
+        ACCEPT_EULA: "Y"

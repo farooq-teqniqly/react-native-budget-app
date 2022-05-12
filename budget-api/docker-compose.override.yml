@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  api:
+    env_file:
+      - ".env"
+    ports:
+      - "5555:80"
+      - "5556:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+  sql:
+    env_file:
+      - ".env"
