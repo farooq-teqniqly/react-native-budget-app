@@ -9,6 +9,14 @@ namespace DataAccess.Entities
 	public class Category : IEntity
 	{
 		/// <summary>
+		/// Initializes a new instance of the <see cref="Category"/> class.
+		/// </summary>
+		public Category()
+		{
+			this.LedgerEntries = new HashSet<LedgerEntry>();
+		}
+
+		/// <summary>
 		/// Gets or sets the category id.
 		/// </summary>
 		public Guid Id { get; set; }
@@ -17,5 +25,10 @@ namespace DataAccess.Entities
 		/// Gets or sets the category name.
 		/// </summary>
 		public string Name { get; set; }
+
+		/// <summary>
+		/// Gets or sets the ledger entries associated with this category.
+		/// </summary>
+		public ICollection<LedgerEntry> LedgerEntries { get; set; }
 	}
 }

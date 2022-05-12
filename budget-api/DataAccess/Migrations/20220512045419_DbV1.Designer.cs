@@ -11,12 +11,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
+	/// <summary>
+	/// Database migration V1.
+	/// </summary>
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220511032302_DbV1")]
+    [Migration("20220512045419_DbV1")]
     partial class DbV1
     {
-        /// <inheritdoc/>
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+		/// <inheritdoc/>
+		protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,14 +54,19 @@ namespace DataAccess.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Created")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("LastUpdated")
-                        .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Ledger", (string)null);
                 });
@@ -82,7 +90,7 @@ namespace DataAccess.Migrations
                     b.Property<bool>("IsIncome")
                         .HasColumnType("bit");
 
-                    b.Property<Guid?>("LedgerId")
+                    b.Property<Guid>("LedgerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("PayeeId")
@@ -91,6 +99,8 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("EntryDate");
 
                     b.HasIndex("LedgerId");
 
@@ -119,28 +129,36 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DataAccess.Entities.LedgerEntry", b =>
                 {
-                    b.HasOne("DataAccess.Entities.Category", "Category")
-                        .WithMany()
+                    b.HasOne("DataAccess.Entities.Category", null)
+                        .WithMany("LedgerEntries")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DataAccess.Entities.Ledger", null)
                         .WithMany("LedgerEntries")
-                        .HasForeignKey("LedgerId");
-
-                    b.HasOne("DataAccess.Entities.Payee", "Payee")
-                        .WithMany()
-                        .HasForeignKey("PayeeId")
+                        .HasForeignKey("LedgerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Category");
+                    b.HasOne("DataAccess.Entities.Payee", null)
+                        .WithMany("LedgerEntries")
+                        .HasForeignKey("PayeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.Navigation("Payee");
+            modelBuilder.Entity("DataAccess.Entities.Category", b =>
+                {
+                    b.Navigation("LedgerEntries");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.Ledger", b =>
+                {
+                    b.Navigation("LedgerEntries");
+                });
+
+            modelBuilder.Entity("DataAccess.Entities.Payee", b =>
                 {
                     b.Navigation("LedgerEntries");
                 });

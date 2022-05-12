@@ -25,6 +25,7 @@ namespace Api.Services
 			this.CreateMap<CreatePayeeRequest, Payee>();
 			this.CreateMap<Payee, CreatePayeeResponse>();
 			this.CreateMap<Payee, GetPayeeResponse>();
+			this.CreateMap<CreateLedgerEntryRequest, LedgerEntry>();
 		}
 	}
 }

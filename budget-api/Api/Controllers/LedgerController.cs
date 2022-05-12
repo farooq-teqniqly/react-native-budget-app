@@ -108,5 +108,28 @@ namespace Api.Controllers
 
 			return this.NoContent();
 		}
+
+		/// <summary>
+		/// Adds ledger entries to a ledger.
+		/// </summary>
+		/// <param name="ledgerId">The ledger id.</param>
+		/// <param name="request">The ledger entries.</param>
+		/// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
+		[HttpPost]
+		[Route("{ledgerId}/entries")]
+		[ProducesResponseType((int)HttpStatusCode.Accepted)]
+		public async Task<IActionResult> CreateLedgerEntries(Guid ledgerId, [FromBody] CreateLedgerEntryRequest[] request)
+		{
+			foreach (var createLedgerEntryRequest in request)
+			{
+				var ledgerEntry = this.mapper.Map<CreateLedgerEntryRequest, LedgerEntry>(createLedgerEntryRequest);
+				ledgerEntry.LedgerId = ledgerId;
+				await this.repository.AddAsync(ledgerEntry);
+			}
+
+			await this.repository.SaveChangesAsync();
+
+			return this.Accepted();
+		}
 	}
 }

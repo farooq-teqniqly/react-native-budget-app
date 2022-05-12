@@ -8,7 +8,7 @@ namespace DataAccess.Migrations
 	using Microsoft.EntityFrameworkCore.Migrations;
 
 	/// <summary>
-	/// Database migration version 1.
+	/// Database migration V1.
 	/// </summary>
 	public partial class DbV1 : Migration
 	{
@@ -32,6 +32,7 @@ namespace DataAccess.Migrations
 				columns: table => new
 				{
 					Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+					Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
 					Created = table.Column<DateTime>(type: "datetime2", nullable: false),
 					LastUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
 				},
@@ -62,7 +63,7 @@ namespace DataAccess.Migrations
 					IsIncome = table.Column<bool>(type: "bit", nullable: false),
 					PayeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
 					CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-					LedgerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+					LedgerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
 				},
 				constraints: table =>
 				{
@@ -77,7 +78,8 @@ namespace DataAccess.Migrations
 						name: "FK_LedgerEntry_Ledger_LedgerId",
 						column: x => x.LedgerId,
 						principalTable: "Ledger",
-						principalColumn: "Id");
+						principalColumn: "Id",
+						onDelete: ReferentialAction.Cascade);
 					table.ForeignKey(
 						name: "FK_LedgerEntry_Payee_PayeeId",
 						column: x => x.PayeeId,
@@ -89,6 +91,12 @@ namespace DataAccess.Migrations
 			migrationBuilder.CreateIndex(
 				name: "IX_Category_Name",
 				table: "Category",
+				column: "Name",
+				unique: true);
+
+			migrationBuilder.CreateIndex(
+				name: "IX_Ledger_Name",
+				table: "Ledger",
 				column: "Name",
 				unique: true);
 
@@ -112,6 +120,11 @@ namespace DataAccess.Migrations
 				table: "Payee",
 				column: "Name",
 				unique: true);
+
+			var createLedgerEntryEntryDateIndexSql =
+				$"CREATE NONCLUSTERED INDEX [IX_LedgerEntry_EntryDate] ON [dbo].[LedgerEntry] ([EntryDate] DESC)";
+
+			migrationBuilder.Sql(createLedgerEntryEntryDateIndexSql);
 		}
 
 		/// <inheritdoc/>

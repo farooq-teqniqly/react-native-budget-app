@@ -84,7 +84,7 @@ namespace DataAccess.Migrations
                     b.Property<bool>("IsIncome")
                         .HasColumnType("bit");
 
-                    b.Property<Guid?>("LedgerId")
+                    b.Property<Guid>("LedgerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("PayeeId")
@@ -93,6 +93,8 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("EntryDate");
 
                     b.HasIndex("LedgerId");
 
@@ -121,28 +123,36 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DataAccess.Entities.LedgerEntry", b =>
                 {
-                    b.HasOne("DataAccess.Entities.Category", "Category")
-                        .WithMany()
+                    b.HasOne("DataAccess.Entities.Category", null)
+                        .WithMany("LedgerEntries")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DataAccess.Entities.Ledger", null)
                         .WithMany("LedgerEntries")
-                        .HasForeignKey("LedgerId");
-
-                    b.HasOne("DataAccess.Entities.Payee", "Payee")
-                        .WithMany()
-                        .HasForeignKey("PayeeId")
+                        .HasForeignKey("LedgerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Category");
+                    b.HasOne("DataAccess.Entities.Payee", null)
+                        .WithMany("LedgerEntries")
+                        .HasForeignKey("PayeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.Navigation("Payee");
+            modelBuilder.Entity("DataAccess.Entities.Category", b =>
+                {
+                    b.Navigation("LedgerEntries");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.Ledger", b =>
+                {
+                    b.Navigation("LedgerEntries");
+                });
+
+            modelBuilder.Entity("DataAccess.Entities.Payee", b =>
                 {
                     b.Navigation("LedgerEntries");
                 });

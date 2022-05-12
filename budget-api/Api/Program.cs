@@ -28,25 +28,44 @@ namespace Api
 
 			var app = builder.Build();
 
-			var migrateOnStartup = builder.Configuration.GetValue<bool>("RunEFCoreMigrationsOnStartup");
+			var scope = app.Services.CreateScope();
 
-			if (migrateOnStartup)
+			using (scope)
 			{
+				var databaseContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+
 				var retryPolicy = Policy
 					.Handle<SqlException>()
 					.WaitAndRetry(
 						3,
 						(_) => TimeSpan.FromSeconds(3));
 
-				Console.WriteLine("MigrateOnStartup is true so running EF Core migrations...");
-				var scope = app.Services.CreateScope();
-				var databaseContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
-				retryPolicy.Execute(() => databaseContext.Database.Migrate());
-				Console.WriteLine("EF Core migrations complete.");
-			}
-			else
-			{
-				Console.WriteLine("Skipping EF Core migrations because MigrateOnStartup is false or not set.");
+				var migrateOnStartup = builder.Configuration.GetValue<bool>("RunEFCoreMigrationsOnStartup");
+
+				if (migrateOnStartup)
+				{
+					Console.WriteLine("RunEFCoreMigrationsOnStartup is true so running EF Core migrations...");
+					retryPolicy.Execute(() => databaseContext.Database.Migrate());
+					Console.WriteLine("EF Core migrations complete.");
+				}
+				else
+				{
+					Console.WriteLine("Skipping EF Core migrations because RunEFCoreMigrationsOnStartup is false or not set.");
+				}
+
+				var seedDatabaseOnStartup = builder.Configuration.GetValue<bool>("RunDatabaseSeederOnStartup");
+
+				if (seedDatabaseOnStartup)
+				{
+					Console.WriteLine("RunDatabaseSeederOnStartup is true so seeding database...");
+					var seeder = new DatabaseSeeder(databaseContext);
+					retryPolicy.Execute(() => seeder.SeedDatabaseAsync().Wait());
+					Console.WriteLine("Database seeding complete.");
+				}
+				else
+				{
+					Console.WriteLine("Skipping seeding database because RunDatabaseSeederOnStartup is false or not set.");
+				}
 			}
 
 			if (app.Environment.IsDevelopment())
