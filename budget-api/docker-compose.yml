@@ -6,8 +6,9 @@ services:
     build:
       context: .
       dockerfile: Api/Dockerfile
+    depends_on:
+      - "sql"
   sql:
     image: "mcr.microsoft.com/mssql/server"
     environment:
-        SA_PASSWORD: "111OFgilead!!!"
         ACCEPT_EULA: "Y"
