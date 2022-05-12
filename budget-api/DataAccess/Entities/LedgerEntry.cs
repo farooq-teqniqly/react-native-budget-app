@@ -31,11 +31,16 @@ namespace DataAccess.Entities
 		/// <summary>
 		/// Gets or sets the payee.
 		/// </summary>
-		public Payee Payee { get; set; }
+		public Guid PayeeId { get; set; }
 
 		/// <summary>
 		/// Gets or sets the category.
 		/// </summary>
-		public Category Category { get; set; }
+		public Guid CategoryId { get; set; }
+
+		/// <summary>
+		/// Gets or sets the ledger id.
+		/// </summary>
+		public Guid LedgerId { get; set; }
 	}
 }
