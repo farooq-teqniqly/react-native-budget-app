@@ -1,9 +1,7 @@
 ﻿// Copyright (c) Farooq Mahmud
 
-namespace Api.Services
+namespace Services
 {
-	using System;
-
 	/// <summary>
 	/// An interface for services providing a DateTime.
 	/// </summary>

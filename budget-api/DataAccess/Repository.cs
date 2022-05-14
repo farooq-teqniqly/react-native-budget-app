@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Farooq Mahmud
 
-namespace Api.Services
+namespace DataAccess
 {
-	using DataAccess;
-	using DataAccess.Entities;
 	using Microsoft.EntityFrameworkCore;
+	using Services;
 
 	/// <summary>
 	/// A generic repository implementing EF Core's unit of work.
@@ -44,10 +43,12 @@ namespace Api.Services
 
 			if (readOnly)
 			{
-				return await set.AsNoTracking().SingleOrDefaultAsync();
+				return await set.AsNoTracking().SingleOrDefaultAsync(e => e.Id == id);
 			}
 
-			return await set.FindAsync(id);
+			var x = await set.FindAsync(id);
+
+			return x;
 		}
 
 		/// <inheritdoc />

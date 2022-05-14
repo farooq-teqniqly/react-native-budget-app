@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Farooq Mahmud
 
-namespace Api.Services
+namespace Services
 {
 	/// <summary>
 	/// A service that provides the current date and time.

@@ -9,6 +9,7 @@ namespace Api.Controllers
 	using Api.Services;
 	using AutoMapper;
 	using DataAccess.Entities;
+	using global::Services;
 	using Microsoft.AspNetCore.Mvc;
 
 	/// <summary>

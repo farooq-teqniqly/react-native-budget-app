@@ -4,6 +4,13 @@ namespace Api
 {
 	using Api.Services;
 	using DataAccess;
+	using DataAccess.GraphQL.Queries;
+	using DataAccess.GraphQL.Schemas;
+	using DataAccess.GraphQL.Types;
+	using global::GraphQL.Server;
+	using global::GraphQL.Types;
+	using global::Services;
+	using GraphiQl;
 	using Microsoft.Data.SqlClient;
 	using Microsoft.EntityFrameworkCore;
 	using Polly;
@@ -25,6 +32,17 @@ namespace Api
 			builder.Services.AddSingleton<IDateTimeService, DateTimeService>();
 
 			builder.Services.AddScoped<IRepository, Repository>();
+
+			builder.Services.AddScoped<LedgerType>();
+			builder.Services.AddScoped<LedgerQuery>();
+			builder.Services.AddScoped<ISchema, LedgerSchema>();
+
+#pragma warning disable CS0612 // Type or member is obsolete
+			builder.Services.AddGraphQL(options =>
+			{
+				options.EnableMetrics = false;
+			}).AddSystemTextJson();
+#pragma warning restore CS0612 // Type or member is obsolete
 
 			var app = builder.Build();
 
@@ -77,6 +95,9 @@ namespace Api
 			app.UseHttpsRedirection();
 			app.UseAuthorization();
 			app.MapControllers();
+
+			app.UseGraphiQl("/graphql");
+			app.UseGraphQL<ISchema>();
 
 			app.Run();
 		}

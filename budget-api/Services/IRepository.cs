@@ -1,12 +1,7 @@
 ﻿// Copyright (c) Farooq Mahmud
 
-namespace Api.Services
+namespace Services
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Threading.Tasks;
-	using DataAccess.Entities;
-
 	/// <summary>
 	/// A generic repository interface implementing the unit of work pattern.
 	/// </summary>

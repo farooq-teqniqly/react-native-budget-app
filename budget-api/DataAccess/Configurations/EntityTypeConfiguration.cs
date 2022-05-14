@@ -5,6 +5,7 @@ namespace DataAccess.Configurations
 	using DataAccess.Entities;
 	using Microsoft.EntityFrameworkCore;
 	using Microsoft.EntityFrameworkCore.Metadata.Builders;
+	using Services;
 
 	/// <summary>
 	/// Base class offering common Entity Framework configuration for entities.
