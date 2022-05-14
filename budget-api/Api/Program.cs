@@ -4,6 +4,7 @@ namespace Api
 {
 	using Api.Services;
 	using DataAccess;
+	using DataAccess.GraphQL.Mutations;
 	using DataAccess.GraphQL.Queries;
 	using DataAccess.GraphQL.Schemas;
 	using DataAccess.GraphQL.Types;
@@ -35,7 +36,13 @@ namespace Api
 
 			builder.Services.AddScoped<LedgerType>();
 			builder.Services.AddScoped<LedgerQuery>();
+			builder.Services.AddScoped<LedgerMutation>();
 			builder.Services.AddScoped<ISchema, LedgerSchema>();
+
+			builder.Services.AddScoped<CategoryType>();
+			builder.Services.AddScoped<CategoryQuery>();
+			builder.Services.AddScoped<CategoryMutation>();
+			builder.Services.AddScoped<ISchema, CategorySchema>();
 
 #pragma warning disable CS0612 // Type or member is obsolete
 			builder.Services.AddGraphQL(options =>
