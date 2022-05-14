@@ -49,8 +49,10 @@ namespace Api
 			builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 			builder.Services.AddScoped<IPayeeRepository, PayeeRepository>();
 
-			//builder.Services.AddScoped<LedgerMutation>();
-			//builder.Services.AddScoped<CategoryMutation>();
+			builder.Services.AddScoped<RootMutation>();
+			builder.Services.AddScoped<LedgerMutation>();
+			builder.Services.AddScoped<CategoryMutation>();
+			builder.Services.AddScoped<PayeeMutation>();
 
 			builder.Services.AddScoped<ISchema, RootSchema>();
 

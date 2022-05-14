@@ -33,6 +33,16 @@ namespace DataAccess.GraphQL.Mutations
 					await repository.DeleteLedgerAsync(ledgerId);
 					return "deleted";
 				});
+
+			this.FieldAsync<IntGraphType> (
+				"createLedgerEntries",
+				arguments: new QueryArguments(new QueryArgument<ListGraphType<LedgerEntryInputType>>
+					{Name = "ledgerEntryInput"}),
+				resolve: async context =>
+				{
+					var ledgerEntries = context.EnsureGetArgument<IEnumerable<LedgerEntry>>("ledgerEntryInput");
+					return await repository.AddLedgerEntriesAsync(ledgerEntries);
+				});
 		}
 	}
 }

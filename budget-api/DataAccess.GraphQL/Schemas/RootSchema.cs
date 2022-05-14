@@ -6,6 +6,7 @@ namespace DataAccess.GraphQL.Schemas
 	using DataAccess.GraphQL.Queries;
 	using global::GraphQL.Types;
 	using Microsoft.Extensions.DependencyInjection;
+	using Mutations;
 
 	public class RootSchema : Schema
 	{
@@ -13,6 +14,7 @@ namespace DataAccess.GraphQL.Schemas
 			: base(serviceProvider)
 		{
 			this.Query = serviceProvider.GetRequiredService<RootQuery>();
+			this.Mutation = serviceProvider.GetRequiredService<RootMutation>();
 		}
 	}
 }
