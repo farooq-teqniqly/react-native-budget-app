@@ -37,12 +37,15 @@ namespace Api
 			builder.Services.AddScoped<LedgerType>();
 			builder.Services.AddScoped<CategoryType>();
 			builder.Services.AddScoped<PayeeType>();
+			builder.Services.AddScoped<LedgerEntryType>();
 
 			builder.Services.AddScoped<LedgerInputType>();
 			builder.Services.AddScoped<CategoryInputType>();
 			builder.Services.AddScoped<PayeeInputType>();
+			builder.Services.AddScoped<LedgerEntryInputType>();
 
 			builder.Services.AddScoped<LedgerQuery>();
+			builder.Services.AddScoped<LedgerEntryQuery>();
 			builder.Services.AddScoped<CategoryQuery>();
 			builder.Services.AddScoped<PayeeQuery>();
 			builder.Services.AddScoped<RootQuery>();

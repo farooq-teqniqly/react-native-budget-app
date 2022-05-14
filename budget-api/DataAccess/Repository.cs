@@ -65,6 +65,17 @@ namespace DataAccess
 			return await set.ToListAsync();
 		}
 
+		public IEnumerable<TEntity> Get<TEntity>(Func<TEntity, bool> filter, bool readOnly = true) 
+			where TEntity : class, IEntity
+		{
+			if (readOnly)
+			{
+				return this.databaseContext.Set<TEntity>().AsNoTracking().AsEnumerable().Where(filter);
+			}
+
+			return this.databaseContext.Set<TEntity>().AsEnumerable().Where(filter);
+		}
+
 		/// <inheritdoc />
 		public async Task<int> SaveChangesAsync()
 		{

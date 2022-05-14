@@ -9,6 +9,7 @@ namespace DataAccess.GraphQL.Queries
 		public RootQuery()
 		{
 			this.Field<LedgerQuery>("ledgerQuery", resolve: _ => new { });
+			this.Field<LedgerEntryQuery>("ledgerEntryQuery", resolve: _ => new { });
 			this.Field<CategoryQuery>("categoryQuery", resolve: _ => new { });
 			this.Field<PayeeQuery>("payeeQuery", resolve: _ => new { });
 		}

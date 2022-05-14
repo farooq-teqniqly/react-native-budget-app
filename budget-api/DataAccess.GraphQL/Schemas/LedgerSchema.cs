@@ -13,5 +13,6 @@ namespace DataAccess.GraphQL.Schemas
 			this.Query = ledgerQuery;
 			this.Mutation = ledgerMutation;
 		}
+		
 	}
 }

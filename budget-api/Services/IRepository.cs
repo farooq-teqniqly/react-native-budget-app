@@ -44,6 +44,11 @@ namespace Services
 		Task<IEnumerable<TEntity>> GetAsync<TEntity>(bool readOnly = true)
 			where TEntity : class, IEntity;
 
+		IEnumerable<TEntity> Get<TEntity>(Func<TEntity, bool> filter, bool readOnly = true)
+			where TEntity : class, IEntity;
+
+
+
 		/// <summary>
 		/// Saves the changes in the unit of work to the database.
 		/// </summary>
