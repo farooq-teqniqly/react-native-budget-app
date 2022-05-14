@@ -13,6 +13,9 @@ namespace DataAccess.GraphQL.Types
 			this.Field(e => e.EntryDate);
 			this.Field(e => e.Amount);
 			this.Field(e => e.IsIncome);
+			this.Field(e => e.LedgerId);
+			this.Field(e => e.PayeeId);
+			this.Field(e => e.CategoryId);
 		}
 	}
 }

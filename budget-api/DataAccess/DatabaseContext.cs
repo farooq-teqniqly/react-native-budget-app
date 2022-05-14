@@ -32,6 +32,7 @@ namespace DataAccess
 		/// Gets or sets the ledgers DbSet.
 		/// </summary>
 		public DbSet<Ledger> Ledgers { get; set; }
+		public DbSet<LedgerEntry> LedgerEntries { get; set; }
 
 		/// <summary>
 		/// Gets or sets the categories DbSet.

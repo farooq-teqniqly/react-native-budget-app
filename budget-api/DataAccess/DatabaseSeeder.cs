@@ -5,6 +5,7 @@ namespace DataAccess
 	using System;
 	using System.Threading.Tasks;
 	using DataAccess.Entities;
+	using Microsoft.EntityFrameworkCore;
 
 	/// <summary>
 	/// This class seeds the Budget database.
@@ -32,6 +33,7 @@ namespace DataAccess
 			await this.SeedCategories();
 			await this.SeedPayees();
 			await this.SeedLedger();
+			await this.SeedLedgerEntries();
 			await this.databaseContext.SaveChangesAsync();
 		}
 
@@ -60,7 +62,8 @@ namespace DataAccess
 			{
 				new { Id = Guid.Parse("8ae49976-52f5-45e9-b6f9-72d2e4daacbf"), Name = "Safeway" },
 				new { Id = Guid.Parse("682ebc46-c7bb-4f1c-aef0-b6a00691279a"), Name = "Denny's" },
-				new { Id = Guid.Parse("44186c12-c48c-40ba-850e-6b4cc153f86a"), Name = "ACME Widgets" },
+				new { Id = Guid.Parse("44186c12-c48c-40ba-850e-6b4cc153f86a"), Name = "Jill" },
+				new { Id = Guid.Parse("17fc72d5-c08f-4452-8cf4-395d40c83837"), Name = "ACME Widgets" },
 			};
 
 			foreach (var payee in payees)
@@ -86,6 +89,61 @@ namespace DataAccess
 				if (await this.databaseContext.Categories.FindAsync(category.Id) == null)
 				{
 					await this.databaseContext.Categories.AddAsync(new Category { Id = category.Id, Name = category.Name });
+				}
+			}
+		}
+
+		private async Task SeedLedgerEntries()
+		{
+			var entries = new LedgerEntry[]
+			{
+				new LedgerEntry
+				{
+					Id = Guid.Parse("783f502d-8239-4602-9f99-602c9b4755f1"),
+					Amount = 45.26M,
+					EntryDate = DateTime.Parse("5/11/2022"),
+					IsIncome = false,
+					CategoryId = Guid.Parse("c89d1d44-8719-47f5-8ab5-5281d005de3c"),
+					PayeeId = Guid.Parse("8ae49976-52f5-45e9-b6f9-72d2e4daacbf"),
+					LedgerId = Guid.Parse("6a58e91a-ec0d-447b-b958-0e0210208176"),
+				},
+				new LedgerEntry
+				{
+					Id = Guid.Parse("fd7e33c1-6610-4f82-884f-03850f4b6117"),
+					Amount = 44.74M,
+					EntryDate = DateTime.Parse("5/12/2022"),
+					IsIncome = true,
+					CategoryId = Guid.Parse("5311d853-b5ba-4880-adef-9e8e1085a541"),
+					PayeeId = Guid.Parse("44186c12-c48c-40ba-850e-6b4cc153f86a"),
+					LedgerId = Guid.Parse("6a58e91a-ec0d-447b-b958-0e0210208176"),
+				},
+				new LedgerEntry
+				{
+					Id = Guid.Parse("48dec574-1930-403e-8111-61e1127c0460"),
+					Amount = 20M,
+					EntryDate = DateTime.Parse("5/13/2022"),
+					IsIncome = false,
+					CategoryId = Guid.Parse("5311d853-b5ba-4880-adef-9e8e1085a541"),
+					PayeeId = Guid.Parse("682ebc46-c7bb-4f1c-aef0-b6a00691279a"),
+					LedgerId = Guid.Parse("6a58e91a-ec0d-447b-b958-0e0210208176"),
+				},
+				new LedgerEntry
+				{
+					Id = Guid.Parse("55ca669b-f693-4131-ae15-a4724f92dac1"),
+					Amount = 7741.46M,
+					EntryDate = DateTime.Parse("5/13/2022"),
+					IsIncome = true,
+					CategoryId = Guid.Parse("5311d853-b5ba-4880-adef-9e8e1085a541"),
+					PayeeId = Guid.Parse("17fc72d5-c08f-4452-8cf4-395d40c83837"),
+					LedgerId = Guid.Parse("6a58e91a-ec0d-447b-b958-0e0210208176"),
+				},
+			};
+
+			foreach (var ledgerEntry in entries)
+			{
+				if (await this.databaseContext.LedgerEntries.FindAsync(ledgerEntry.Id) == null)
+				{
+					await this.databaseContext.LedgerEntries.AddAsync(ledgerEntry);
 				}
 			}
 		}
