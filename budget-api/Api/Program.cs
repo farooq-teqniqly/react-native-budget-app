@@ -35,14 +35,16 @@ namespace Api
 			builder.Services.AddScoped<IRepository, Repository>();
 
 			builder.Services.AddScoped<LedgerType>();
-			builder.Services.AddScoped<LedgerQuery>();
-			builder.Services.AddScoped<LedgerMutation>();
-			builder.Services.AddScoped<ISchema, LedgerSchema>();
-
 			builder.Services.AddScoped<CategoryType>();
+
+			builder.Services.AddScoped<LedgerQuery>();
 			builder.Services.AddScoped<CategoryQuery>();
-			builder.Services.AddScoped<CategoryMutation>();
-			builder.Services.AddScoped<ISchema, CategorySchema>();
+			builder.Services.AddScoped<RootQuery>();
+
+			//builder.Services.AddScoped<LedgerMutation>();
+			//builder.Services.AddScoped<CategoryMutation>();
+
+			builder.Services.AddScoped<ISchema, RootSchema>();
 
 #pragma warning disable CS0612 // Type or member is obsolete
 			builder.Services.AddGraphQL(options =>

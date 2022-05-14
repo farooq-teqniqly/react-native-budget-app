@@ -1,4 +1,6 @@
-﻿namespace DataAccess.GraphQL
+﻿// Copyright (c) Farooq Mahmud
+
+namespace DataAccess.GraphQL
 {
 	using System;
 	using global::GraphQL;
