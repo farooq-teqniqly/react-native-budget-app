@@ -1,10 +1,12 @@
-﻿namespace DataAccess.GraphQL.Mutations
+﻿// Copyright (c) Farooq Mahmud
+
+namespace DataAccess.GraphQL.Mutations
 {
-	using Entities;
+	using DataAccess.Entities;
+	using DataAccess.GraphQL.Types;
 	using global::GraphQL;
 	using global::GraphQL.Types;
 	using Services;
-	using Types;
 
 	public class CategoryMutation : ObjectGraphType
 	{
@@ -16,6 +18,12 @@
 				resolve: async context =>
 				{
 					var category = context.GetArgument<Category>("categoryInput");
+
+					if (category == null)
+					{
+						throw new ArgumentNullException("categoryInput");
+					}
+
 					category = await repository.AddAsync(category);
 					await repository.SaveChangesAsync();
 

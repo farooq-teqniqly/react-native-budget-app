@@ -2,9 +2,9 @@
 
 namespace DataAccess.GraphQL.Schemas
 {
+	using DataAccess.GraphQL.Mutations;
 	using DataAccess.GraphQL.Queries;
 	using global::GraphQL.Types;
-	using DataAccess.GraphQL.Mutations;
 
 	public class LedgerSchema : Schema
 	{

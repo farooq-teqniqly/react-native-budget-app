@@ -1,4 +1,6 @@
-﻿namespace DataAccess.GraphQL.Mutations
+﻿// Copyright (c) Farooq Mahmud
+
+namespace DataAccess.GraphQL.Mutations
 {
 	using DataAccess.Entities;
 	using DataAccess.GraphQL.Types;
@@ -16,6 +18,12 @@
 				resolve: async context =>
 				{
 					var ledger = context.GetArgument<Ledger>("ledgerInput");
+
+					if (ledger == null)
+					{
+						throw new ArgumentNullException(paramName: "ledgerInput");
+					}
+
 					ledger.Created = dateTimeService.DateTime;
 					ledger = await repository.AddAsync(ledger);
 					await repository.SaveChangesAsync();
