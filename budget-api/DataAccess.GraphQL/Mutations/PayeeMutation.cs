@@ -2,12 +2,13 @@
 {
 	using Entities;
 	using global::GraphQL.Types;
+	using Repositories;
 	using Services;
 	using Types;
 
 	public class PayeeMutation : ObjectGraphType
 	{
-		public PayeeMutation(IRepository repository)
+		public PayeeMutation(IPayeeRepository repository)
 		{
 			this.FieldAsync<CategoryType>(
 				"createPayee",
@@ -15,9 +16,7 @@
 				resolve: async context =>
 				{
 					var payee = context.EnsureGetArgument<Payee>("payeeInput");
-					payee = await repository.AddAsync(payee);
-					await repository.SaveChangesAsync();
-
+					payee = await repository.AddPayeeAsync(payee);
 					return payee;
 				});
 		}

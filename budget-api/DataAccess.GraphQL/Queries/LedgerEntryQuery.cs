@@ -2,20 +2,21 @@
 {
 	using Entities;
 	using global::GraphQL.Types;
+	using Repositories;
 	using Services;
 	using Types;
 
 	public class LedgerEntryQuery : ObjectGraphType
 	{
-		public LedgerEntryQuery(IRepository repository)
+		public LedgerEntryQuery(ILedgerRepository repository)
 		{
-			this.Field<ListGraphType<LedgerEntryType>>(
+			this.FieldAsync<ListGraphType<LedgerEntryType>>(
 				"ledgerEntries",
 				arguments: new QueryArguments(new QueryArgument<GuidGraphType> {Name = "ledgerId"}),
-				resolve: context =>
+				resolve: async context =>
 				{
 					var ledgerId = context.EnsureGetArgument<Guid>("ledgerId");
-					return repository.Get<LedgerEntry>(le => le.LedgerId == ledgerId).ToList();
+					return await repository.GetLedgerEntriesAsync(ledgerId);
 				});
 		}
 	}

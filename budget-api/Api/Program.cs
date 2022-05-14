@@ -8,6 +8,7 @@ namespace Api
 	using DataAccess.GraphQL.Queries;
 	using DataAccess.GraphQL.Schemas;
 	using DataAccess.GraphQL.Types;
+	using DataAccess.Repositories;
 	using global::GraphQL.Server;
 	using global::GraphQL.Types;
 	using global::Services;
@@ -22,18 +23,12 @@ namespace Api
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
-			builder.Services.AddControllers();
-			builder.Services.AddEndpointsApiExplorer();
-			builder.Services.AddSwaggerGen();
-
 			builder.Services.AddDbContext<DatabaseContext>(options =>
 				options.UseSqlServer(builder.Configuration.GetConnectionString("BudgetDb")));
 
 			builder.Services.AddAutoMapper(typeof(MappingProfile));
 			builder.Services.AddSingleton<IDateTimeService, DateTimeService>();
-
-			builder.Services.AddScoped<IRepository, Repository>();
-
+			
 			builder.Services.AddScoped<LedgerType>();
 			builder.Services.AddScoped<CategoryType>();
 			builder.Services.AddScoped<PayeeType>();
@@ -49,6 +44,10 @@ namespace Api
 			builder.Services.AddScoped<CategoryQuery>();
 			builder.Services.AddScoped<PayeeQuery>();
 			builder.Services.AddScoped<RootQuery>();
+
+			builder.Services.AddScoped<ILedgerRepository, LedgerRepository>();
+			builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+			builder.Services.AddScoped<IPayeeRepository, PayeeRepository>();
 
 			//builder.Services.AddScoped<LedgerMutation>();
 			//builder.Services.AddScoped<CategoryMutation>();
@@ -106,17 +105,11 @@ namespace Api
 
 			if (app.Environment.IsDevelopment())
 			{
-				app.UseSwagger();
-				app.UseSwaggerUI();
+				app.UseGraphiQl("/graphql");
 			}
 
 			app.UseHttpsRedirection();
-			app.UseAuthorization();
-			app.MapControllers();
-
-			app.UseGraphiQl("/graphql");
 			app.UseGraphQL<ISchema>();
-
 			app.Run();
 		}
 	}

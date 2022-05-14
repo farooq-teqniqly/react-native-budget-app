@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Farooq Mahmud
 
-namespace Services
+namespace DataAccess
 {
 	/// <summary>
 	/// The IEntity interface is implemented by all entities.

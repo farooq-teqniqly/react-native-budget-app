@@ -6,11 +6,12 @@ namespace DataAccess.GraphQL.Mutations
 	using DataAccess.GraphQL.Types;
 	using global::GraphQL;
 	using global::GraphQL.Types;
+	using Repositories;
 	using Services;
 
 	public class LedgerMutation : ObjectGraphType
 	{
-		public LedgerMutation(IRepository repository, IDateTimeService dateTimeService)
+		public LedgerMutation(ILedgerRepository repository, IDateTimeService dateTimeService)
 		{
 			this.FieldAsync<LedgerType>(
 				"createLedger",
@@ -19,9 +20,7 @@ namespace DataAccess.GraphQL.Mutations
 				{
 					var ledger = context.EnsureGetArgument<Ledger>("ledgerInput");
 					ledger.Created = dateTimeService.DateTime;
-					ledger = await repository.AddAsync(ledger);
-					await repository.SaveChangesAsync();
-
+					ledger = await repository.AddLedgerAsync(ledger);
 					return ledger;
 				});
 
@@ -30,14 +29,8 @@ namespace DataAccess.GraphQL.Mutations
 				arguments: new QueryArguments(new QueryArgument<GuidGraphType> { Name = "id" }),
 				resolve: async context =>
 				{
-					var ledger = await repository.GetAsync<Ledger>(context.GetArgument<Guid>("id"));
-
-					if (ledger != null)
-					{
-						repository.Remove(ledger);
-						await repository.SaveChangesAsync();
-					}
-
+					var ledgerId = context.EnsureGetArgument<Guid>("id");
+					await repository.DeleteLedgerAsync(ledgerId);
 					return "deleted";
 				});
 		}
