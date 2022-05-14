@@ -17,13 +17,7 @@ namespace DataAccess.GraphQL.Mutations
 				arguments: new QueryArguments(new QueryArgument<LedgerInputType> { Name = "ledgerInput" }),
 				resolve: async context =>
 				{
-					var ledger = context.GetArgument<Ledger>("ledgerInput");
-
-					if (ledger == null)
-					{
-						throw new ArgumentNullException(paramName: "ledgerInput");
-					}
-
+					var ledger = context.EnsureGetArgument<Ledger>("ledgerInput");
 					ledger.Created = dateTimeService.DateTime;
 					ledger = await repository.AddAsync(ledger);
 					await repository.SaveChangesAsync();

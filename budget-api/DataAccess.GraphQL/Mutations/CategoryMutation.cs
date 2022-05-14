@@ -17,13 +17,7 @@ namespace DataAccess.GraphQL.Mutations
 				arguments: new QueryArguments(new QueryArgument<CategoryInputType> { Name = "categoryInput" }),
 				resolve: async context =>
 				{
-					var category = context.GetArgument<Category>("categoryInput");
-
-					if (category == null)
-					{
-						throw new ArgumentNullException("categoryInput");
-					}
-
+					var category = context.EnsureGetArgument<Category>("categoryInput");
 					category = await repository.AddAsync(category);
 					await repository.SaveChangesAsync();
 
