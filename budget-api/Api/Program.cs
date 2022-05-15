@@ -17,9 +17,16 @@ namespace Api
 	using Microsoft.EntityFrameworkCore;
 	using Polly;
 
-	internal class Program
+	/// <summary>
+	/// The API entry point.
+	/// </summary>
+	public class Program
 	{
-		internal static void Main(string[] args)
+		/// <summary>
+		/// The API entry point.
+		/// </summary>
+		/// <param name="args">Arguments to the program.</param>
+		public static void Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
@@ -76,6 +83,15 @@ namespace Api
 					.WaitAndRetry(
 						3,
 						(_) => TimeSpan.FromSeconds(3));
+
+				var deleteOnStartup = builder.Configuration.GetValue<bool>("DeleteDatabaseOnStartup");
+
+				if (deleteOnStartup)
+				{
+					Console.WriteLine("DeleteDatabaseOnStartup is true so deleting database...");
+					retryPolicy.Execute(() => databaseContext.Database.EnsureDeleted());
+					Console.WriteLine("Database deleted.");
+				}
 
 				var migrateOnStartup = builder.Configuration.GetValue<bool>("RunEFCoreMigrationsOnStartup");
 
