@@ -1,10 +1,12 @@
-﻿namespace DataAccess.GraphQL.Mutations
+﻿// Copyright (c) Farooq Mahmud
+
+namespace DataAccess.GraphQL.Mutations
 {
-	using Entities;
+	using DataAccess.Entities;
+	using DataAccess.GraphQL.Types;
+	using DataAccess.Repositories;
+	using global::GraphQL;
 	using global::GraphQL.Types;
-	using Repositories;
-	using Services;
-	using Types;
 
 	public class PayeeMutation : ObjectGraphType
 	{
@@ -12,13 +14,8 @@
 		{
 			this.FieldAsync<CategoryType>(
 				"createPayee",
-				arguments: new QueryArguments(new QueryArgument<PayeeInputType> { Name = "payeeInput" }),
-				resolve: async context =>
-				{
-					var payee = context.EnsureGetArgument<Payee>("payeeInput");
-					payee = await repository.AddPayeeAsync(payee);
-					return payee;
-				});
+				arguments: new QueryArguments(new QueryArgument<NonNullGraphType<PayeeInputType>> { Name = "payeeInput" }),
+				resolve: async context => await repository.AddPayeeAsync(context.GetArgument<Payee>("payeeInput") ?? throw new InvalidOperationException("Payee is null.")));
 		}
 	}
 }

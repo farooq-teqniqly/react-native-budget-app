@@ -1,6 +1,8 @@
-﻿namespace DataAccess.Repositories
+﻿// Copyright (c) Farooq Mahmud
+
+namespace DataAccess.Repositories
 {
-	using Entities;
+	using DataAccess.Entities;
 
 	public interface IPayeeRepository
 	{

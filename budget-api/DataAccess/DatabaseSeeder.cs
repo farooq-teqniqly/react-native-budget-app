@@ -5,7 +5,6 @@ namespace DataAccess
 	using System;
 	using System.Threading.Tasks;
 	using DataAccess.Entities;
-	using Microsoft.EntityFrameworkCore;
 
 	/// <summary>
 	/// This class seeds the Budget database.

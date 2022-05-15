@@ -1,6 +1,8 @@
-﻿namespace DataAccess.Repositories
+﻿// Copyright (c) Farooq Mahmud
+
+namespace DataAccess.Repositories
 {
-	using Entities;
+	using DataAccess.Entities;
 	using Microsoft.EntityFrameworkCore;
 
 	public class LedgerRepository : ILedgerRepository
@@ -52,6 +54,21 @@
 			}
 
 			return null;
+		}
+
+		public async Task<int> DeleteLedgerEntriesAsync(IEnumerable<Guid> ledgerEntryIds)
+		{
+			foreach (var ledgerEntryId in ledgerEntryIds)
+			{
+				var ledgerEntry = await this.databaseContext.LedgerEntries.SingleOrDefaultAsync(e => e.Id == ledgerEntryId);
+
+				if (ledgerEntry != null)
+				{
+					this.databaseContext.LedgerEntries.Remove(ledgerEntry);
+				}
+			}
+
+			return await this.databaseContext.SaveChangesAsync();
 		}
 	}
 }

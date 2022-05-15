@@ -1,4 +1,6 @@
-﻿namespace DataAccess.GraphQL.Types
+﻿// Copyright (c) Farooq Mahmud
+
+namespace DataAccess.GraphQL.Types
 {
 	using global::GraphQL.Types;
 

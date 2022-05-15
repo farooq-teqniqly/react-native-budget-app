@@ -1,7 +1,9 @@
-﻿namespace DataAccess.GraphQL.Schemas
+﻿// Copyright (c) Farooq Mahmud
+
+namespace DataAccess.GraphQL.Schemas
 {
+	using DataAccess.GraphQL.Queries;
 	using global::GraphQL.Types;
-	using Queries;
 
 	public class LedgerEntrySchema : Schema
 	{
@@ -9,6 +11,5 @@
 		{
 			this.Query = ledgerEntryQuery;
 		}
-
 	}
 }

@@ -3,10 +3,10 @@
 namespace DataAccess.GraphQL.Schemas
 {
 	using System;
+	using DataAccess.GraphQL.Mutations;
 	using DataAccess.GraphQL.Queries;
 	using global::GraphQL.Types;
 	using Microsoft.Extensions.DependencyInjection;
-	using Mutations;
 
 	public class RootSchema : Schema
 	{

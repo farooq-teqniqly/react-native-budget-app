@@ -1,10 +1,10 @@
-﻿namespace DataAccess.GraphQL.Queries
+﻿// Copyright (c) Farooq Mahmud
+
+namespace DataAccess.GraphQL.Queries
 {
-	using Entities;
+	using DataAccess.GraphQL.Types;
+	using DataAccess.Repositories;
 	using global::GraphQL.Types;
-	using Repositories;
-	using Services;
-	using Types;
 
 	public class PayeeQuery : ObjectGraphType
 	{

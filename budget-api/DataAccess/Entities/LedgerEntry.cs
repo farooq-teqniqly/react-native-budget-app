@@ -3,8 +3,6 @@
 #pragma warning disable CS8618
 namespace DataAccess.Entities
 {
-	using Services;
-
 	/// <summary>
 	/// Represents a ledger entry.
 	/// </summary>

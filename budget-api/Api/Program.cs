@@ -28,7 +28,7 @@ namespace Api
 
 			builder.Services.AddAutoMapper(typeof(MappingProfile));
 			builder.Services.AddSingleton<IDateTimeService, DateTimeService>();
-			
+
 			builder.Services.AddScoped<LedgerType>();
 			builder.Services.AddScoped<CategoryType>();
 			builder.Services.AddScoped<PayeeType>();

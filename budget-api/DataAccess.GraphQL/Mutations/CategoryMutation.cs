@@ -4,10 +4,9 @@ namespace DataAccess.GraphQL.Mutations
 {
 	using DataAccess.Entities;
 	using DataAccess.GraphQL.Types;
+	using DataAccess.Repositories;
 	using global::GraphQL;
 	using global::GraphQL.Types;
-	using Repositories;
-	using Services;
 
 	public class CategoryMutation : ObjectGraphType
 	{
@@ -15,13 +14,8 @@ namespace DataAccess.GraphQL.Mutations
 		{
 			this.FieldAsync<CategoryType>(
 				"createCategory",
-				arguments: new QueryArguments(new QueryArgument<CategoryInputType> { Name = "categoryInput" }),
-				resolve: async context =>
-				{
-					var category = context.EnsureGetArgument<Category>("categoryInput");
-					category = await repository.AddCategoryAsync(category);
-					return category;
-				});
+				arguments: new QueryArguments(new QueryArgument<NonNullGraphType<CategoryInputType>> { Name = "categoryInput" }),
+				resolve: async context => await repository.AddCategoryAsync(context.GetArgument<Category>("categoryInput") ?? throw new InvalidOperationException("Category is null.")));
 		}
 	}
 }

@@ -1,10 +1,11 @@
-﻿namespace DataAccess.GraphQL.Queries
+﻿// Copyright (c) Farooq Mahmud
+
+namespace DataAccess.GraphQL.Queries
 {
-	using Entities;
+	using DataAccess.GraphQL.Types;
+	using DataAccess.Repositories;
+	using global::GraphQL;
 	using global::GraphQL.Types;
-	using Repositories;
-	using Services;
-	using Types;
 
 	public class LedgerEntryQuery : ObjectGraphType
 	{
@@ -12,12 +13,8 @@
 		{
 			this.FieldAsync<ListGraphType<LedgerEntryType>>(
 				"ledgerEntries",
-				arguments: new QueryArguments(new QueryArgument<GuidGraphType> {Name = "ledgerId"}),
-				resolve: async context =>
-				{
-					var ledgerId = context.EnsureGetArgument<Guid>("ledgerId");
-					return await repository.GetLedgerEntriesAsync(ledgerId);
-				});
+				arguments: new QueryArguments(new QueryArgument<NonNullGraphType<GuidGraphType>> { Name = "ledgerId" }),
+				resolve: async context => await repository.GetLedgerEntriesAsync(context.GetArgument<Guid>("ledgerId")));
 		}
 	}
 }

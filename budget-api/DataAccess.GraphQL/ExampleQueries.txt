@@ -1,0 +1,104 @@
+﻿query getLedgers {
+  ledgerQuery {
+    ledgers {
+      name
+      id
+      created
+    }
+  }
+}
+
+query getPayees {
+  payeeQuery {
+    payees {
+      name
+      id
+    }
+  }
+}
+
+query getCategories {
+  categoryQuery {
+    categories {
+      name
+      id
+    }
+  }
+}
+
+query getLedgerEntries {
+  ledgerEntryQuery {
+    ledgerEntries(ledgerId: "9100d818-9e42-4256-47b7-08da3605ff07") {
+      id
+      entryDate
+      amount
+      isIncome
+      ledgerId
+      payeeId
+      categoryId
+    }
+  }
+}
+
+mutation createLedger($ledger:LedgerInputType!) {
+  ledgerMutation {
+    createLedger(ledgerInput:$ledger) {
+      id
+      name
+      created
+      lastUpdated
+    }
+  }
+}
+
+mutation addLedgerEntries($entries:[LedgerEntryInputType!]) {
+  ledgerMutation {
+    createLedgerEntries(ledgerEntryInput:$entries)
+  }
+}
+
+mutation deleteLedger {
+  ledgerMutation {
+    deleteLedger(id: "3d543603-8bf8-44aa-f080-08da35fb6e95")
+  }
+}
+
+mutation deleteLedgerEntries {
+  ledgerMutation {
+    deleteLedgerEntries(ledgerEntryIds:["de46a907-81f7-4fca-b407-08da360611b6", "4cca1284-cda7-4d1c-b408-08da360611b6"])
+  }
+}
+
+
+
+{
+  "ledger": {
+    "name": "Demo Ledger #2"
+  },
+  "entries": [
+  	{
+      "entryDate": "2022-05-14",
+      "amount": 9.99,
+      "isIncome": false,
+      "ledgerId": "9100d818-9e42-4256-47b7-08da3605ff07",
+      "categoryId": "5311d853-b5ba-4880-adef-9e8e1085a541",
+      "payeeId": "682ebc46-c7bb-4f1c-aef0-b6a00691279a"
+    },
+    {
+      "entryDate": "2022-05-14",
+      "amount": 9.99,
+      "isIncome": false,
+      "ledgerId": "9100d818-9e42-4256-47b7-08da3605ff07",
+      "categoryId": "5311d853-b5ba-4880-adef-9e8e1085a541",
+      "payeeId": "682ebc46-c7bb-4f1c-aef0-b6a00691279a"
+    },
+    {
+      "entryDate": "2022-05-14",
+      "amount": 9.99,
+      "isIncome": false,
+      "ledgerId": "9100d818-9e42-4256-47b7-08da3605ff07",
+      "categoryId": "5311d853-b5ba-4880-adef-9e8e1085a541",
+      "payeeId": "682ebc46-c7bb-4f1c-aef0-b6a00691279a"
+  	}
+]
+}

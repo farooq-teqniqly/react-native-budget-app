@@ -2,12 +2,10 @@
 
 namespace DataAccess.GraphQL.Queries
 {
-	using DataAccess.Entities;
 	using DataAccess.GraphQL.Types;
+	using DataAccess.Repositories;
 	using global::GraphQL;
 	using global::GraphQL.Types;
-	using Repositories;
-	using Services;
 
 	public class LedgerQuery : ObjectGraphType
 	{
@@ -19,12 +17,8 @@ namespace DataAccess.GraphQL.Queries
 
 			this.FieldAsync<LedgerType>(
 				"ledger",
-				arguments: new QueryArguments(new QueryArgument<GuidGraphType> { Name = "id" }),
-				resolve: async context =>
-				{
-					var ledgerId = context.EnsureGetArgument<Guid>("id");
-					return await repository.GetLedgerAsync(ledgerId);
-				});
+				arguments: new QueryArguments(new QueryArgument<NonNullGraphType<GuidGraphType>> { Name = "id" }),
+				resolve: async context => await repository.GetLedgerAsync(context.GetArgument<Guid>("id")));
 		}
 	}
 }

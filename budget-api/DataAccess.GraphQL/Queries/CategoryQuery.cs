@@ -2,11 +2,9 @@
 
 namespace DataAccess.GraphQL.Queries
 {
-	using DataAccess.Entities;
 	using DataAccess.GraphQL.Types;
+	using DataAccess.Repositories;
 	using global::GraphQL.Types;
-	using Repositories;
-	using Services;
 
 	public class CategoryQuery : ObjectGraphType
 	{

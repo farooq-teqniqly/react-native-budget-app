@@ -1,8 +1,10 @@
-﻿namespace DataAccess.GraphQL.Schemas
+﻿// Copyright (c) Farooq Mahmud
+
+namespace DataAccess.GraphQL.Schemas
 {
+	using DataAccess.GraphQL.Mutations;
+	using DataAccess.GraphQL.Queries;
 	using global::GraphQL.Types;
-	using Mutations;
-	using Queries;
 
 	public class PayeeSchema : Schema
 	{
