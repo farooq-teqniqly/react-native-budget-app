@@ -80,7 +80,7 @@ namespace DataAccess
 			{
 				new { Id = Guid.Parse("c89d1d44-8719-47f5-8ab5-5281d005de3c"), Name = "Groceries" },
 				new { Id = Guid.Parse("5311d853-b5ba-4880-adef-9e8e1085a541"), Name = "Dining out" },
-				new { Id = Guid.Parse("5311d853-b5ba-4880-adef-9e8e1085a541"), Name = "Net Salary" },
+				new { Id = Guid.Parse("d715a5c6-c9a2-4fcc-af03-781f684b9451"), Name = "Net salary" },
 			};
 
 			foreach (var category in categories)

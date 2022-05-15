@@ -16,6 +16,15 @@ namespace DataAccess.GraphQL.Mutations
 				"createCategory",
 				arguments: new QueryArguments(new QueryArgument<NonNullGraphType<CategoryInputType>> { Name = "categoryInput" }),
 				resolve: async context => await repository.AddCategoryAsync(context.GetArgument<Category>("categoryInput") ?? throw new InvalidOperationException("Category is null.")));
+
+			this.FieldAsync<StringGraphType>(
+				name: "deleteCategory",
+				arguments: new QueryArguments(new QueryArgument<NonNullGraphType<GuidGraphType>> { Name = "categoryId" }),
+				resolve: async context =>
+				{
+					await repository.DeleteCategoryAsync(context.GetArgument<Guid>("categoryId"));
+					return "deleted";
+				});
 		}
 	}
 }
