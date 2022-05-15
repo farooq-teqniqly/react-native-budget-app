@@ -1,9 +1,7 @@
 ﻿// Copyright (c) Farooq Mahmud
 
-namespace DataAccess.Entities
+namespace DataAccess
 {
-	using System;
-
 	/// <summary>
 	/// The IEntity interface is implemented by all entities.
 	/// </summary>
