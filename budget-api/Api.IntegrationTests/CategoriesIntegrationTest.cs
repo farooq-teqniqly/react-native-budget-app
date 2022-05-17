@@ -2,6 +2,7 @@
 
 namespace Api.IntegrationTests
 {
+	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Net;
@@ -43,25 +44,33 @@ namespace Api.IntegrationTests
 		{
 			var categoryName = nameof(this.Can_Create_Get_Delete_Category);
 			var createMutation = "mutation {categoryMutation {createCategory(categoryInput:{name: " + "\"" + categoryName + "\"" + "}) {id name}}}";
-			var createResponse = await this.GraphClient.PostAsync("/graphql", new StringContent(createMutation, Encoding.UTF8, "application/graphql"));
-			createResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+			var categoryId = Guid.Empty;
 
-			var queryResult = JObject.Parse(await createResponse.Content.ReadAsStringAsync());
-			var jToken = queryResult["data"] !["categoryMutation"] !["createCategory"];
-			var category = jToken!.ToObject<Category>();
+			await this.RunTest<Category>(
+				createMutation,
+				(response) =>
+				{
+					response.StatusCode.Should().Be(HttpStatusCode.OK);
+				},
+				(jo) => jo["data"]!["categoryMutation"]!["createCategory"],
+				(category) =>
+				{
+					category!.Name.Should().Be(categoryName);
+					category.Id.Should().NotBeEmpty();
+					categoryId = category.Id;
+				});
 
-			category!.Name.Should().Be(categoryName);
-			category.Id.Should().NotBeEmpty();
+			
+			var deleteMutation = "mutation {categoryMutation {deleteCategory(categoryId: " + "\"" + categoryId + "\"" + ")}}";
 
-			var deleteMutation = "mutation {categoryMutation {deleteCategory(categoryId: " + "\"" + category.Id + "\"" + ")}}";
-			var deleteResponse = await this.GraphClient.PostAsync("/graphql", new StringContent(deleteMutation, Encoding.UTF8, "application/graphql"));
-			deleteResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-
-			queryResult = JObject.Parse(await deleteResponse.Content.ReadAsStringAsync());
-			jToken = queryResult["data"] !["categoryMutation"] !["deleteCategory"];
-			var deleteMessage = jToken!.ToObject<string>();
-
-			deleteMessage.Should().Be("deleted");
+			await this.RunTest<string>(
+				deleteMutation,
+				(response) =>
+				{
+					response.StatusCode.Should().Be(HttpStatusCode.OK);
+				},
+				(jo) => jo["data"]!["categoryMutation"]!["deleteCategory"],
+				(message) => message.Should().Be("deleted"));
 		}
 	}
 }
