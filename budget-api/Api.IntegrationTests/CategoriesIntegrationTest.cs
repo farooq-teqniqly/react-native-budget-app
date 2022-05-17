@@ -19,18 +19,23 @@ namespace Api.IntegrationTests
 		public async Task Can_GetCategories()
 		{
 			var query = "query {categoryQuery {categories {id name}}}";
-			var response = await this.GraphClient.PostAsync("/graphql", new StringContent(query, Encoding.UTF8, "application/graphql"));
-			response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-			var queryResult = JObject.Parse(await response.Content.ReadAsStringAsync());
-			var jToken = queryResult["data"] !["categoryQuery"] !["categories"];
-			var categories = jToken!.ToObject<IEnumerable<Category>>() !.ToList();
+			await this.RunTest<IEnumerable<Category>>(
+				query,
+				(response) =>
+				{
+					response.StatusCode.Should().Be(HttpStatusCode.OK);
+				},
+				(jo) => jo["data"]!["categoryQuery"]!["categories"]!,
+				(categories) =>
+				{
+					var enumerable = categories.ToList();
 
-			categories.Count.Should().Be(3);
-
-			categories.SingleOrDefault(c => c.Name == "Dining out") !.Id.Should().Be("5311D853-B5BA-4880-ADEF-9E8E1085A541");
-			categories.SingleOrDefault(c => c.Name == "Groceries") !.Id.Should().Be("C89D1D44-8719-47F5-8AB5-5281D005DE3C");
-			categories.SingleOrDefault(c => c.Name == "Net salary") !.Id.Should().Be("D715A5C6-C9A2-4FCC-AF03-781F684B9451");
+					enumerable.Count.Should().Be(3);
+					enumerable.SingleOrDefault(c => c.Name == "Dining out")!.Id.Should().Be("5311D853-B5BA-4880-ADEF-9E8E1085A541");
+					enumerable.SingleOrDefault(c => c.Name == "Groceries")!.Id.Should().Be("C89D1D44-8719-47F5-8AB5-5281D005DE3C");
+					enumerable.SingleOrDefault(c => c.Name == "Net salary")!.Id.Should().Be("D715A5C6-C9A2-4FCC-AF03-781F684B9451");
+				});
 		}
 
 		[Fact]
