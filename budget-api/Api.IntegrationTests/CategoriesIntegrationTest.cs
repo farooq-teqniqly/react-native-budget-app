@@ -44,9 +44,8 @@ namespace Api.IntegrationTests
 		{
 			var categoryName = nameof(this.Can_Create_Get_Delete_Category);
 			var createMutation = "mutation {categoryMutation {createCategory(categoryInput:{name: " + "\"" + categoryName + "\"" + "}) {id name}}}";
-			var categoryId = Guid.Empty;
-
-			await this.RunTest<Category>(
+			
+			var testResult = await this.RunTest<Category>(
 				createMutation,
 				(response) =>
 				{
@@ -57,11 +56,10 @@ namespace Api.IntegrationTests
 				{
 					category!.Name.Should().Be(categoryName);
 					category.Id.Should().NotBeEmpty();
-					categoryId = category.Id;
 				});
 
 			
-			var deleteMutation = "mutation {categoryMutation {deleteCategory(categoryId: " + "\"" + categoryId + "\"" + ")}}";
+			var deleteMutation = "mutation {categoryMutation {deleteCategory(categoryId: " + "\"" + testResult.DeserializedResponse.Id + "\"" + ")}}";
 
 			await this.RunTest<string>(
 				deleteMutation,

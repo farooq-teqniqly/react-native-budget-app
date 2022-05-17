@@ -23,7 +23,7 @@ namespace Api.IntegrationTests
 
 		protected HttpClient GraphClient { get; }
 
-		protected async Task RunTest<T>(
+		protected async Task<TestResult<T>> RunTest<T>(
 			string query,
 			Action<HttpResponseMessage> assertResponse,
 			Func<JObject, JToken> objectToDeserialize,
@@ -33,6 +33,20 @@ namespace Api.IntegrationTests
 			assertResponse(response);
 			var deserializedResponse = await response.DeserializeRepsonse<T>(objectToDeserialize);
 			assertDeserializedResponse(deserializedResponse);
+
+			return new TestResult<T>(response, deserializedResponse);
 		}
+	}
+
+	public class TestResult<T>
+	{
+		public TestResult(HttpResponseMessage response, T deserializedResponse)
+		{
+			this.Response = response;
+			this.DeserializedResponse = deserializedResponse;
+		}
+
+		public HttpResponseMessage Response { get; set; }
+		public T DeserializedResponse { get; set; }
 	}
 }
