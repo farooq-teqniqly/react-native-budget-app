@@ -22,6 +22,7 @@ namespace DataAccess.GraphQL.Types
 			this.Field(e => e.LedgerId);
 			this.Field(e => e.PayeeId);
 			this.Field(e => e.CategoryId);
+			this.Field(e => e.Description);
 		}
 	}
 }

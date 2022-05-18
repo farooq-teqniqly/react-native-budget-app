@@ -136,7 +136,8 @@ namespace Api.IntegrationTests
 									        categoryId:""{categoryId}""
 									        amount:101.33,
 									        entryDate: ""2022-05-17"",
-									        isIncome:true
+									        isIncome:true,
+											description: ""Stuff""
 									      }},
 									      {{
 									        ledgerId:""{ledgerId}"",
@@ -144,7 +145,8 @@ namespace Api.IntegrationTests
 									        categoryId:""{categoryId}""
 									        amount:63.43,
 									        entryDate: ""2022-05-16"",
-									        isIncome:true
+									        isIncome:true,
+											description: ""Food""
 									      }}
 									    ])
 									  }}
@@ -169,6 +171,7 @@ namespace Api.IntegrationTests
 							      amount
 							      entryDate
 							      isIncome
+								  description
 							      payeeId
 							      categoryId
 							      ledgerId
@@ -182,7 +185,10 @@ namespace Api.IntegrationTests
 				{
 					response.StatusCode.Should().Be(HttpStatusCode.OK);
 				},
-				(jo) => jo["data"] !["ledgerEntryQuery"] !["ledgerEntries"] !,
+				(jo) =>
+				{
+					return jo["data"] !["ledgerEntryQuery"] !["ledgerEntries"] !;
+				},
 				(ledgerEntries) =>
 				{
 					var enumerable = ledgerEntries.ToList();
@@ -194,6 +200,7 @@ namespace Api.IntegrationTests
 					entry.CategoryId.Should().Be(categoryId);
 					entry.EntryDate.Should().Be(DateTime.Parse("2022-05-17"));
 					entry.IsIncome.Should().BeTrue();
+					entry.Description.Should().Be("Stuff");
 
 					entry = enumerable.Single(e => e.Amount == 63.43M);
 					entry.Id.Should().NotBeEmpty();
@@ -202,6 +209,7 @@ namespace Api.IntegrationTests
 					entry.CategoryId.Should().Be(categoryId);
 					entry.EntryDate.Should().Be(DateTime.Parse("2022-05-16"));
 					entry.IsIncome.Should().BeTrue();
+					entry.Description.Should().Be("Food");
 				});
 
 			var ledgerEntryIds = getLedgerEntriesTestResult.DeserializedResponse

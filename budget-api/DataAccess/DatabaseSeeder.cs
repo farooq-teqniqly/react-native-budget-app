@@ -105,6 +105,7 @@ namespace DataAccess
 					CategoryId = Guid.Parse("c89d1d44-8719-47f5-8ab5-5281d005de3c"),
 					PayeeId = Guid.Parse("8ae49976-52f5-45e9-b6f9-72d2e4daacbf"),
 					LedgerId = Guid.Parse("6a58e91a-ec0d-447b-b958-0e0210208176"),
+					Description = "Ledger entry 1",
 				},
 				new ()
 				{
@@ -115,6 +116,7 @@ namespace DataAccess
 					CategoryId = Guid.Parse("5311d853-b5ba-4880-adef-9e8e1085a541"),
 					PayeeId = Guid.Parse("44186c12-c48c-40ba-850e-6b4cc153f86a"),
 					LedgerId = Guid.Parse("6a58e91a-ec0d-447b-b958-0e0210208176"),
+					Description = "Ledger entry 2",
 				},
 				new ()
 				{
@@ -125,6 +127,7 @@ namespace DataAccess
 					CategoryId = Guid.Parse("5311d853-b5ba-4880-adef-9e8e1085a541"),
 					PayeeId = Guid.Parse("682ebc46-c7bb-4f1c-aef0-b6a00691279a"),
 					LedgerId = Guid.Parse("6a58e91a-ec0d-447b-b958-0e0210208176"),
+					Description = "Ledger entry 3",
 				},
 				new ()
 				{
@@ -135,6 +138,7 @@ namespace DataAccess
 					CategoryId = Guid.Parse("5311d853-b5ba-4880-adef-9e8e1085a541"),
 					PayeeId = Guid.Parse("17fc72d5-c08f-4452-8cf4-395d40c83837"),
 					LedgerId = Guid.Parse("6a58e91a-ec0d-447b-b958-0e0210208176"),
+					Description = "Ledger entry 4",
 				},
 			};
 

@@ -20,6 +20,7 @@ namespace DataAccess.GraphQL.Types
 			this.Field<GuidGraphType>("ledgerId");
 			this.Field<GuidGraphType>("payeeId");
 			this.Field<GuidGraphType>("categoryId");
+			this.Field<StringGraphType>("description");
 		}
 	}
 }
