@@ -31,22 +31,10 @@ namespace Api.IntegrationTests
 		{
 			var response = await this.GraphClient.SendQueryAsync(query);
 			assertResponse(response);
-			var deserializedResponse = await response.DeserializeRepsonse<T>(objectToDeserialize);
+			var deserializedResponse = await response.DeserializeResponse<T>(objectToDeserialize);
 			assertDeserializedResponse(deserializedResponse);
 
 			return new TestResult<T>(response, deserializedResponse);
 		}
-	}
-
-	public class TestResult<T>
-	{
-		public TestResult(HttpResponseMessage response, T deserializedResponse)
-		{
-			this.Response = response;
-			this.DeserializedResponse = deserializedResponse;
-		}
-
-		public HttpResponseMessage Response { get; set; }
-		public T DeserializedResponse { get; set; }
 	}
 }

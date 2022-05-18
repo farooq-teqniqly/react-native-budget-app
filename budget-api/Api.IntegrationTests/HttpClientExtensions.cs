@@ -1,8 +1,8 @@
-﻿namespace Api.IntegrationTests
+﻿// Copyright (c) Farooq Mahmud
+
+namespace Api.IntegrationTests
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Linq;
 	using System.Net.Http;
 	using System.Text;
 	using System.Threading.Tasks;
@@ -20,7 +20,7 @@
 					"application/graphql"));
 		}
 
-		public static async Task<T> DeserializeRepsonse<T>(
+		public static async Task<T> DeserializeResponse<T>(
 			this HttpResponseMessage response,
 			Func<JObject, JToken> objectToDeserialize)
 		{

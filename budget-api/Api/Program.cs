@@ -2,20 +2,19 @@
 
 namespace Api
 {
-	using Api.Services;
 	using DataAccess;
 	using DataAccess.GraphQL.Mutations;
 	using DataAccess.GraphQL.Queries;
 	using DataAccess.GraphQL.Schemas;
 	using DataAccess.GraphQL.Types;
 	using DataAccess.Repositories;
-	using global::GraphQL.Server;
-	using global::GraphQL.Types;
-	using global::Services;
 	using GraphiQl;
+	using GraphQL.Server;
+	using GraphQL.Types;
 	using Microsoft.Data.SqlClient;
 	using Microsoft.EntityFrameworkCore;
 	using Polly;
+	using Services;
 
 	/// <summary>
 	/// The API entry point.
@@ -33,7 +32,6 @@ namespace Api
 			builder.Services.AddDbContext<DatabaseContext>(options =>
 				options.UseSqlServer(builder.Configuration.GetConnectionString("BudgetDb")));
 
-			builder.Services.AddAutoMapper(typeof(MappingProfile));
 			builder.Services.AddSingleton<IDateTimeService, DateTimeService>();
 
 			builder.Services.AddScoped<LedgerType>();

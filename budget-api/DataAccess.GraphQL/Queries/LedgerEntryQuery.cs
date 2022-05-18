@@ -7,8 +7,15 @@ namespace DataAccess.GraphQL.Queries
 	using global::GraphQL;
 	using global::GraphQL.Types;
 
+	/// <summary>
+	/// The LedgerEntry query.
+	/// </summary>
 	public class LedgerEntryQuery : ObjectGraphType
 	{
+		/// <summary>
+		/// Initializes a new instance of the <see cref="LedgerEntryQuery"/> class.
+		/// </summary>
+		/// <param name="repository">The Ledger repository.</param>
 		public LedgerEntryQuery(ILedgerRepository repository)
 		{
 			this.FieldAsync<ListGraphType<LedgerEntryType>>(

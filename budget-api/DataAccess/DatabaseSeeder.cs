@@ -96,7 +96,7 @@ namespace DataAccess
 		{
 			var entries = new LedgerEntry[]
 			{
-				new LedgerEntry
+				new ()
 				{
 					Id = Guid.Parse("783f502d-8239-4602-9f99-602c9b4755f1"),
 					Amount = 45.26M,
@@ -106,7 +106,7 @@ namespace DataAccess
 					PayeeId = Guid.Parse("8ae49976-52f5-45e9-b6f9-72d2e4daacbf"),
 					LedgerId = Guid.Parse("6a58e91a-ec0d-447b-b958-0e0210208176"),
 				},
-				new LedgerEntry
+				new ()
 				{
 					Id = Guid.Parse("fd7e33c1-6610-4f82-884f-03850f4b6117"),
 					Amount = 44.74M,
@@ -116,7 +116,7 @@ namespace DataAccess
 					PayeeId = Guid.Parse("44186c12-c48c-40ba-850e-6b4cc153f86a"),
 					LedgerId = Guid.Parse("6a58e91a-ec0d-447b-b958-0e0210208176"),
 				},
-				new LedgerEntry
+				new ()
 				{
 					Id = Guid.Parse("48dec574-1930-403e-8111-61e1127c0460"),
 					Amount = 20M,
@@ -126,7 +126,7 @@ namespace DataAccess
 					PayeeId = Guid.Parse("682ebc46-c7bb-4f1c-aef0-b6a00691279a"),
 					LedgerId = Guid.Parse("6a58e91a-ec0d-447b-b958-0e0210208176"),
 				},
-				new LedgerEntry
+				new ()
 				{
 					Id = Guid.Parse("55ca669b-f693-4131-ae15-a4724f92dac1"),
 					Amount = 7741.46M,
