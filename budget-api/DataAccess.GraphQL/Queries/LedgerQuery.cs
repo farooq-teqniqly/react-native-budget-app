@@ -7,8 +7,15 @@ namespace DataAccess.GraphQL.Queries
 	using global::GraphQL;
 	using global::GraphQL.Types;
 
+	/// <summary>
+	/// The Ledger GraphQL query.
+	/// </summary>
 	public class LedgerQuery : ObjectGraphType
 	{
+		/// <summary>
+		/// Initializes a new instance of the <see cref="LedgerQuery"/> class.
+		/// </summary>
+		/// <param name="repository">The Ledger repository.</param>
 		public LedgerQuery(ILedgerRepository repository)
 		{
 			this.FieldAsync<ListGraphType<LedgerType>>(
@@ -17,8 +24,8 @@ namespace DataAccess.GraphQL.Queries
 
 			this.FieldAsync<LedgerType>(
 				"ledger",
-				arguments: new QueryArguments(new QueryArgument<NonNullGraphType<GuidGraphType>> { Name = "id" }),
-				resolve: async context => await repository.GetLedgerAsync(context.GetArgument<Guid>("id")));
+				arguments: new QueryArguments(new QueryArgument<NonNullGraphType<GuidGraphType>> { Name = "ledgerId" }),
+				resolve: async context => await repository.GetLedgerAsync(context.GetArgument<Guid>("ledgerId")));
 		}
 	}
 }

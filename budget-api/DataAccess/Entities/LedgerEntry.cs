@@ -42,5 +42,7 @@ namespace DataAccess.Entities
 		/// Gets or sets the ledger id.
 		/// </summary>
 		public Guid LedgerId { get; set; }
+
+		public string Description { get; set; }
 	}
 }

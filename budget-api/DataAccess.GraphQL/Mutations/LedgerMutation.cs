@@ -9,8 +9,16 @@ namespace DataAccess.GraphQL.Mutations
 	using global::GraphQL.Types;
 	using Services;
 
+	/// <summary>
+	/// The Ledger mutation.
+	/// </summary>
 	public class LedgerMutation : ObjectGraphType
 	{
+		/// <summary>
+		/// Initializes a new instance of the <see cref="LedgerMutation"/> class.
+		/// </summary>
+		/// <param name="repository">The Ledger repository.</param>
+		/// <param name="dateTimeService">The service used to get DateTime instances.</param>
 		public LedgerMutation(ILedgerRepository repository, IDateTimeService dateTimeService)
 		{
 			this.FieldAsync<LedgerType>(
@@ -26,10 +34,10 @@ namespace DataAccess.GraphQL.Mutations
 
 			this.FieldAsync<StringGraphType>(
 				"deleteLedger",
-				arguments: new QueryArguments(new QueryArgument<NonNullGraphType<GuidGraphType>> { Name = "id" }),
+				arguments: new QueryArguments(new QueryArgument<NonNullGraphType<GuidGraphType>> { Name = "ledgerId" }),
 				resolve: async context =>
 				{
-					await repository.DeleteLedgerAsync(context.GetArgument<Guid>("id"));
+					await repository.DeleteLedgerAsync(context.GetArgument<Guid>("ledgerId"));
 					return "deleted";
 				});
 

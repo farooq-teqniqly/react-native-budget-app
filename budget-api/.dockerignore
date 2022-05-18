@@ -24,3 +24,4 @@
 LICENSE
 README.md
 ./DataAccess/appsettings.json
+./Api/appsettings.ApiIntegrationTest.json

@@ -2,31 +2,36 @@
 
 namespace Api
 {
-	using Api.Services;
 	using DataAccess;
 	using DataAccess.GraphQL.Mutations;
 	using DataAccess.GraphQL.Queries;
 	using DataAccess.GraphQL.Schemas;
 	using DataAccess.GraphQL.Types;
 	using DataAccess.Repositories;
-	using global::GraphQL.Server;
-	using global::GraphQL.Types;
-	using global::Services;
 	using GraphiQl;
+	using GraphQL.Server;
+	using GraphQL.Types;
 	using Microsoft.Data.SqlClient;
 	using Microsoft.EntityFrameworkCore;
 	using Polly;
+	using Services;
 
-	internal class Program
+	/// <summary>
+	/// The API entry point.
+	/// </summary>
+	public class Program
 	{
-		internal static void Main(string[] args)
+		/// <summary>
+		/// The API entry point.
+		/// </summary>
+		/// <param name="args">Arguments to the program.</param>
+		public static void Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
 			builder.Services.AddDbContext<DatabaseContext>(options =>
 				options.UseSqlServer(builder.Configuration.GetConnectionString("BudgetDb")));
 
-			builder.Services.AddAutoMapper(typeof(MappingProfile));
 			builder.Services.AddSingleton<IDateTimeService, DateTimeService>();
 
 			builder.Services.AddScoped<LedgerType>();
@@ -76,6 +81,15 @@ namespace Api
 					.WaitAndRetry(
 						3,
 						(_) => TimeSpan.FromSeconds(3));
+
+				var deleteOnStartup = builder.Configuration.GetValue<bool>("DeleteDatabaseOnStartup");
+
+				if (deleteOnStartup)
+				{
+					Console.WriteLine("DeleteDatabaseOnStartup is true so deleting database...");
+					retryPolicy.Execute(() => databaseContext.Database.EnsureDeleted());
+					Console.WriteLine("Database deleted.");
+				}
 
 				var migrateOnStartup = builder.Configuration.GetValue<bool>("RunEFCoreMigrationsOnStartup");
 

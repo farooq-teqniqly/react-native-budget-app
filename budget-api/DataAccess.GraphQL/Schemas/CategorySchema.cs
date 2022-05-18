@@ -6,11 +6,19 @@ namespace DataAccess.GraphQL.Schemas
 	using DataAccess.GraphQL.Queries;
 	using global::GraphQL.Types;
 
+	/// <summary>
+	/// The Category schema.
+	/// </summary>
 	public class CategorySchema : Schema
 	{
-		public CategorySchema(CategoryQuery ledgerQuery, CategoryMutation categoryMutation)
+		/// <summary>
+		/// Initializes a new instance of the <see cref="CategorySchema"/> class.
+		/// </summary>
+		/// <param name="categoryQuery">The query associated with this schema.</param>
+		/// <param name="categoryMutation">The mutation associated with this schema.</param>
+		public CategorySchema(CategoryQuery categoryQuery, CategoryMutation categoryMutation)
 		{
-			this.Query = ledgerQuery;
+			this.Query = categoryQuery;
 			this.Mutation = categoryMutation;
 		}
 	}

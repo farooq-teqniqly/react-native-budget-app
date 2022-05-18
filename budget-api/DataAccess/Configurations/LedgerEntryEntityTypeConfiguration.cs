@@ -18,6 +18,7 @@ namespace DataAccess.Configurations
 			builder.Property(e => e.EntryDate).IsRequired();
 			builder.Property(e => e.Amount).IsRequired().HasPrecision(10, 2);
 			builder.Property(e => e.IsIncome).IsRequired();
+			builder.Property(e => e.Description);
 			builder.HasIndex(e => e.EntryDate);
 		}
 	}
